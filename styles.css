@@ -2,7 +2,24 @@ html {
     box-sizing: border-box;
 }
 
+h1.title {
+    text-align: center;
+    font-size: 45px;
+    margin: 2px 0;
+}
+
 .main {
+    display: flex;
+    justify-content: center;
+}
+
+.feature-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-grid {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,5 +42,5 @@ button {
 }
 
 .hoveredBlock {
-    background-color: pink;
+    /* background-color: pink; */
 }

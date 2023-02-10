@@ -1,3 +1,7 @@
+let hoveredColor; //sets color for hovered grid blocks
+
+
+/* Create grid */
 function createDivGrid(dimension) {
     const numOfBlock = dimension * dimension;
     const container = document.querySelector('div.container');
@@ -9,15 +13,36 @@ function createDivGrid(dimension) {
     container.style.cssText = `grid-template-columns: repeat(${dimension}, 1fr)`;
 }
 
-function addHoverColor(e) {
+function setColor(color) {
+    hoveredColor = color;
+}
+
+function start(dimension) {
+    createDivGrid(dimension);
+    addResetEffect();
+    addHoverEffectToAll();
+    setColor('black');
+}
+/* ---- */
+
+
+/* Hover color effect */
+function addHoverEffect(e) {
     e.target.classList.add('hoveredBlock');
+    e.target.style.backgroundColor = hoveredColor;
 }
 
-function hoverEffect() {
-    const blocks = document.querySelectorAll('.grid-item');
-    blocks.forEach(function(block) {block.addEventListener('mouseover', addHoverColor)});
+function addHoverEffectToAll() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(function(item) {
+        item.removeEventListener('mouseover', addEraserEffect);
+        item.addEventListener('mouseover', addHoverEffect);
+    });
 }
+/* ---- */
 
+
+/* Reset grid */
 function removeAllChildren(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -43,11 +68,54 @@ function addResetEffect() {
     const button = document.querySelector('button.reset');
     button.addEventListener('click', resetGrid);
 }
+/* ---- */
 
-function start(dimension) {
-    createDivGrid(dimension);
-    addResetEffect();
-    hoverEffect();
+
+/* Add color features */
+function changeColor(e) {
+    setColor(e.target.textContent);
 }
 
+function addColorButtons(...colors) {
+    const featureArea = document.querySelector('.feature-control');
+    for (const color of colors) {
+        const colorButton = document.createElement('button');
+        colorButton.textContent = `${color}`;
+        colorButton.classList.add('color-button');
+        colorButton.addEventListener('click', changeColor);
+        colorButton.addEventListener('click', addHoverEffectToAll);
+        featureArea.appendChild(colorButton);
+    }
+}
+/* ---- */
+
+
+/* Add erase feature */
+function addEraserEffect(e) {
+    hoveredColor = '';
+    e.target.style.removeProperty('background-color');
+    e.target.classList.remove('hoveredBlock');
+}
+
+function addEraserEffectToAll() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(function(item) {
+        item.removeEventListener('mouseover', addHoverEffect)
+        item.addEventListener('mouseover', addEraserEffect);
+    })
+}
+
+function addEraserButton() {
+    const featureArea = document.querySelector('.feature-control');
+    const eraserButton = document.createElement('button');
+    eraserButton.textContent = 'Erase'
+    eraserButton.classList.add('eraser');
+    eraserButton.addEventListener('click', addEraserEffectToAll);
+    featureArea.appendChild(eraserButton);
+}
+/* ---- */
+
+
 start(16);
+addColorButtons('Black', 'Red', 'Blue', 'Green');
+addEraserButton();
