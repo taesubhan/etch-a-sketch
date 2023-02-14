@@ -44,8 +44,6 @@ function addHoverEffect(e) {
 function addHoverEffectToAll() {
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(function(item) {
-        // item.removeEventListener('mouseover', addEraserEffect);
-        // item.removeEventListener('mouseover', addRainbowEffect);
         item = removeAllEventListeners(item);
         item.addEventListener('mouseover', addHoverEffect);
     });
@@ -100,7 +98,6 @@ function addColorButtons(...colors) {
 }
 /* ---- */
 
-//Note: rainbow may interfere with other buttons due to the eventListeners
 
 /* Add rainbow feature */
 function getRandomNumber(max) {
@@ -109,9 +106,6 @@ function getRandomNumber(max) {
 
 function addRainbowEffect(e) {
     e.target.classList.add('hoveredBlock');
-
-    // const colorList = ['purple', 'yellow'];
-    // hoveredColor = colorList[getRandomNumber(colorList.length)-1];
     hoveredColor = `rgb(${getRandomNumber(256)},${getRandomNumber(256)},${getRandomNumber(256)})`;
     e.target.style.backgroundColor = hoveredColor;
 }
