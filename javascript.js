@@ -26,6 +26,15 @@ function start(dimension) {
 /* ---- */
 
 
+/* Remove all event listeners */
+function removeAllEventListeners(Node) {
+    const newNode = Node.cloneNode(true);
+    Node.replaceWith(newNode);
+    return newNode;
+}
+/* ---- */
+
+
 /* Hover color effect */
 function addHoverEffect(e) {
     e.target.classList.add('hoveredBlock');
@@ -35,7 +44,9 @@ function addHoverEffect(e) {
 function addHoverEffectToAll() {
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(function(item) {
-        item.removeEventListener('mouseover', addEraserEffect);
+        // item.removeEventListener('mouseover', addEraserEffect);
+        // item.removeEventListener('mouseover', addRainbowEffect);
+        item = removeAllEventListeners(item);
         item.addEventListener('mouseover', addHoverEffect);
     });
 }
@@ -89,6 +100,39 @@ function addColorButtons(...colors) {
 }
 /* ---- */
 
+//Note: rainbow may interfere with other buttons due to the eventListeners
+
+/* Add rainbow feature */
+function getRandomNumber(max) {
+    return Math.floor(Math.random()*max);
+}
+
+function addRainbowEffect(e) {
+    e.target.classList.add('hoveredBlock');
+
+    // const colorList = ['purple', 'yellow'];
+    // hoveredColor = colorList[getRandomNumber(colorList.length)-1];
+    hoveredColor = `rgb(${getRandomNumber(256)},${getRandomNumber(256)},${getRandomNumber(256)})`;
+    e.target.style.backgroundColor = hoveredColor;
+}
+
+function addRainbowEffectToAll() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(function(item) {
+        item = removeAllEventListeners(item);
+        item.addEventListener('mouseover', addRainbowEffect)
+    })    
+}
+
+function addRainbowButton() {
+    const rainbowButton = document.createElement('button');
+    rainbowButton.textContent = 'Rainbow';
+    rainbowButton.addEventListener('click', addRainbowEffectToAll);
+    const buttonList = document.querySelector('.feature-control');
+    buttonList.appendChild(rainbowButton);
+}
+/* ---- */
+
 
 /* Add erase feature */
 function addEraserEffect(e) {
@@ -100,7 +144,7 @@ function addEraserEffect(e) {
 function addEraserEffectToAll() {
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(function(item) {
-        item.removeEventListener('mouseover', addHoverEffect)
+        item = removeAllEventListeners(item);
         item.addEventListener('mouseover', addEraserEffect);
     })
 }
@@ -118,4 +162,5 @@ function addEraserButton() {
 
 start(16);
 addColorButtons('Black', 'Red', 'Blue', 'Green');
+addRainbowButton();
 addEraserButton();
